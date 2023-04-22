@@ -74,6 +74,7 @@ struct Calculator {
             newNumber = Decimal(string: numberString.appending("\(digit.rawValue)"))
         }
     }
+    
     mutating func setOperation(_ operation: ArithmeticOperation) {
         // 1.
         guard var number = newNumber ?? result else { return }
