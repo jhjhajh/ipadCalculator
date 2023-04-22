@@ -11,14 +11,17 @@ extension CalculatorView {
     struct CalculatorButton: View {
         
         let buttonType: ButtonType
+        @EnvironmentObject private var viewModel: ViewModel
         
         var body: some View {
-            Button(buttonType.description) { }
+            Button(buttonType.description) {
+                viewModel.performAction(for: buttonType)
+            }
                 .buttonStyle(CalculatorButtonStyle(
                     width: buttonWidth(buttonType: buttonType),
                     height: buttonHeight(),
-                    backgroundColor: buttonType.backgroundColor,
-                    foregroundColor: buttonType.foregroundColor
+                    backgroundColor: getBackgroundColor(),
+                    foregroundColor: getForegroundColor()
                     )
                 )
         }
@@ -32,6 +35,14 @@ extension CalculatorView {
         
         func buttonHeight() -> CGFloat {
             return (UIScreen.main.bounds.width - (5*12)) / 5
+        }
+        
+        private func getBackgroundColor() -> Color {
+            return viewModel.buttonTypeIsHighlighted(buttonType: buttonType) ? buttonType.foregroundColor : buttonType.backgroundColor
+        }
+
+        private func getForegroundColor() -> Color {
+            return viewModel.buttonTypeIsHighlighted(buttonType: buttonType) ? buttonType.backgroundColor : buttonType.foregroundColor
         }
     }
 }
